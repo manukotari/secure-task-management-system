@@ -36,21 +36,21 @@ public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificat
     long countByStatus(TaskStatus status);
     long countByPriority(TaskPriority priority);
 
-    @Query("SELECT COUNT(t) FROM Task t WHERE t.dueDate < :now AND t.status != 'COMPLETED'")
+    @Query("SELECT COUNT(t) FROM Task t WHERE t.dueDate < :now AND t.status != com.taskmanagement.secure.entity.TaskStatus.COMPLETED")
     long countOverdueTasks(@Param("now") Instant now);
 
     // Aggregations for Manager Dashboard
     long countByTeamIdIn(Collection<Long> teamIds);
     long countByTeamIdInAndStatus(Collection<Long> teamIds, TaskStatus status);
 
-    @Query("SELECT COUNT(t) FROM Task t WHERE t.team.id IN :teamIds AND t.dueDate < :now AND t.status != 'COMPLETED'")
+    @Query("SELECT COUNT(t) FROM Task t WHERE t.team.id IN :teamIds AND t.dueDate < :now AND t.status != com.taskmanagement.secure.entity.TaskStatus.COMPLETED")
     long countOverdueTasksForTeams(@Param("teamIds") Collection<Long> teamIds, @Param("now") Instant now);
 
     // Aggregations for User Dashboard
     long countByAssigneeId(Long assigneeId);
     long countByAssigneeIdAndStatus(Long assigneeId, TaskStatus status);
 
-    @Query("SELECT COUNT(t) FROM Task t WHERE t.assignee.id = :assigneeId AND t.dueDate < :now AND t.status != 'COMPLETED'")
+    @Query("SELECT COUNT(t) FROM Task t WHERE t.assignee.id = :assigneeId AND t.dueDate < :now AND t.status != com.taskmanagement.secure.entity.TaskStatus.COMPLETED")
     long countOverdueTasksForAssignee(@Param("assigneeId") Long assigneeId, @Param("now") Instant now);
 
     // Priority breakdown queries
